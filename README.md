@@ -1,4 +1,4 @@
 # zocoBot
 Bot de frases conchasdesumadre
 
-Construido utilizando la api de Telegram para NodeJS (https://github.com/yagop/node-telegram-bot-api[Link GitHub])
+Construido utilizando la api de Telegram para NodeJS ([Link GitHub]https://github.com/yagop/node-telegram-bot-api)
