@@ -1,0 +1,12 @@
+{
+  "name": "test-bot",
+  "version": "1.0.0",
+  "description": "Bot para telegram",
+  "main": "bot.js",
+  "author": "CrazzyRat",
+  "license": "ISC",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.30.0",
+    "request": "^2.85.0"
+  }
+}
