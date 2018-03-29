@@ -4,10 +4,9 @@ const fs = require ('fs');
 
 var configs = fs.readFileSync("config.json");
 var configJson = JSON.parse(configs);
-var token = configJson.apikey;
 
-// API Token Telegram
-//var token = '573668578:AAEoYBB0RlsKEHTHM71eyn-_ikzCt8OSj3g';
+//Lee token de config.json
+var token = configJson.apikey;
 
 const bot = new TelegramBot(token, {polling: true});
 
