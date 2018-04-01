@@ -22,3 +22,4 @@ bot.onText(/\/frase/, (msg) => {
     bot.sendMessage(msg.chat.id, randFrase.frase);
 });
 
+
