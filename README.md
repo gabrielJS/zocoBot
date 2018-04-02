@@ -9,6 +9,7 @@ MySQL.
 ## Requisitos
 - NodeJs
 - npm
+- MySQL
 
 ## Instalación
 
