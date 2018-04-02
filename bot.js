@@ -27,6 +27,46 @@ bot.onText(/\/frase/, (msg) => {
     });
 });
 
+bot.onText(/\/agregarFrase/, (msg) => {
+    var username = msg.chat.username;
+    var sql = 'SELECT * FROM users where username = ?';
+    con.query(sql, [username], function (err, result) {
+        if (err) throw err;
+        if (typeof result !== 'undefined' && result.length > 0) {
+            bot.sendMessage(msg.chat.id, 'Ingresa nueva zocofrase', {
+                reply_markup: {
+                    force_reply: true
+                }
+            }).then(payload => {
+                const replyListenerId = bot.onReplyToMessage(payload.chat.id, payload.message_id, msg => {
+                    bot.removeReplyListener(replyListenerId);
+                    var nuevaFrase = msg.text;
+                    bot.sendMessage(msg.chat.id, 'Ingresa autor', {
+                        reply_markup: {
+                            force_reply: true
+                        }
+                    }).then(payload => {
+                        const replyListenerId = bot.onReplyToMessage(payload.chat.id, payload.message_id, msg => {
+                            bot.removeReplyListener(replyListenerId);
+                            var nuevoAutor = msg.text;
+                            var sql = "INSERT INTO frases (frase, autor) VALUES ?";
+                            var values = [
+                                [nuevaFrase, nuevoAutor]
+                            ];
+                            con.query(sql,[values], function (err, result) {
+                                if (err) throw err;
+                                bot.sendMessage(msg.chat.id, 'Frase insertada');
+                            });
+                        })
+                    })
+                })
+            })
+        } else {
+            bot.sendMessage(msg.chat.id, 'No tienes permisos para insertar frase');
+        }
+    });
+});
+
 
 
 
