@@ -27,6 +27,14 @@ bot.onText(/\/frase/, (msg) => {
     });
 });
 
+bot.onText(/\/foto/, (msg) => {
+    con.query("SELECT * FROM fotos ORDER BY RAND() LIMIT 1;", function (err, result, fields) {
+        if (err) throw err;
+        var randFrase = result[0].url_foto;
+        bot.sendMessage(msg.chat.id, randFrase);
+    });
+});
+
 bot.onText(/\/agregarFrase/, (msg) => {
     var username = msg.chat.username;
     var sql = 'SELECT * FROM users where username = ?';
@@ -67,6 +75,35 @@ bot.onText(/\/agregarFrase/, (msg) => {
     });
 });
 
+bot.onText(/\/agregarFoto/, (msg) => {
+    var username = msg.chat.username;
+    var sql = 'SELECT * FROM users where username = ?';
+    con.query(sql, [username], function (err, result) {
+        if (err) throw err;
+        if (typeof result !== 'undefined' && result.length > 0) {
+            bot.sendMessage(msg.chat.id, 'Ingresa url de foto/video', {
+                reply_markup: {
+                    force_reply: true
+                }
+            }).then(payload => {
+                const replyListenerId = bot.onReplyToMessage(payload.chat.id, payload.message_id, msg => {
+                    bot.removeReplyListener(replyListenerId);
+                    var nuevaFoto = msg.text;
+                    var sql = "INSERT INTO fotos (url_foto) VALUES ?";
+                    var values = [
+                        [nuevaFoto]
+                    ];
+                    con.query(sql,[values], function (err, result) {
+                        if (err) throw err;
+                        bot.sendMessage(msg.chat.id, 'Registro insertado');
+                    });
+                })
+            })
+        } else {
+            bot.sendMessage(msg.chat.id, 'No tienes permisos para insertar frase');
+        }
+    });
+});
 
 
 
